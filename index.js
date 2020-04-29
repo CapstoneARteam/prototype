@@ -42,10 +42,14 @@ const span = document.getElementsByClassName("close")[0];
 const button = document.getElementById("pin_button");
 span.onclick = () => modal.style.display = "none";
 button.onclick = () => {
+    const image = document.getElementById("myImg");
+    const file = document.getElementById("upload");
+    image.src= URL.createObjectURL(file.files[0]);
+
     const desc = {
         desc: document.getElementById("description").value,
         hint: document.getElementById("tip_hint").value,
         dest: document.getElementById("destination").value
     }
-    L.marker(latlng).addTo(map).bindPopup(`${desc.desc}<br>${desc.hint}<br>${desc.dest}`);
+    L.marker(latlng).addTo(map).bindPopup(`${desc.desc}<br>${desc.hint}<br>${desc.dest}<br><img src='${image.src}'>`);
 };

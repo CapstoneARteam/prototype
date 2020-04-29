@@ -50,7 +50,7 @@ button.onclick = () => {
         hint: document.getElementById("tip_hint").value,
         dest: document.getElementById("destination").value
     }
-    L.marker(latlng).addTo(map).bindPopup(`${desc.desc}<br>${desc.hint}<br>${desc.dest}<br><img src='${image.src}'>`);
+    L.marker(latlng).addTo(map).bindPopup(`${desc.desc}<br>${desc.hint}<br>${desc.dest}<br><img src='${image.src}' style="width: 300px;">`);
     modal.style.display = "none";
 };
 

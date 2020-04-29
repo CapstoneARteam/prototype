@@ -1,3 +1,6 @@
 # Prototype
 
-This is not the final deliverable. This is a tribute.
+## first time setup 
+```$ cd ar-project```
+```$ npm install```
+```$ npm start```

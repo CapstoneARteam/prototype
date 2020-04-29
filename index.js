@@ -29,22 +29,21 @@ map.on('locationerror', onLocationError);
 map.locate({ setView: true, maxZoom: 16 });
 
 var latlng = null;
+const modal = document.getElementById("pin_form");
+const span = document.getElementsByClassName("close")[0];
+const button = document.getElementById("pin_button");
+const file = document.getElementById("upload");
+const image = document.getElementById("myImg");
+
 function onMapClick(e)
 {
-    const modal = document.getElementById("pin_form");
     modal.style.display = modal.style.display !== "block"? "block": "none";
     latlng = e.latlng;
 }
 map.on('click',onMapClick);
 
-const modal = document.getElementById("pin_form");
-const span = document.getElementsByClassName("close")[0];
-const button = document.getElementById("pin_button");
 span.onclick = () => modal.style.display = "none";
 button.onclick = () => {
-    const image = document.getElementById("myImg");
-    const file = document.getElementById("upload");
-    image.src= URL.createObjectURL(file.files[0]);
 
     const desc = {
         desc: document.getElementById("description").value,
@@ -52,4 +51,10 @@ button.onclick = () => {
         dest: document.getElementById("destination").value
     }
     L.marker(latlng).addTo(map).bindPopup(`${desc.desc}<br>${desc.hint}<br>${desc.dest}<br><img src='${image.src}'>`);
+    modal.style.display = "none";
 };
+
+file.onchange = () => {
+    image.src= URL.createObjectURL(file.files[0]);
+    image.style.display = "block";
+}

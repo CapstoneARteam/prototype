@@ -44,6 +44,8 @@ const ad = new Audio("https://www.mboxdrive.com/soul.mp3");
 var rec;
 var audio_input;
 var audio_stream;
+var audio_url;
+
 
 function onMapClick(e)
 {
@@ -53,14 +55,16 @@ function onMapClick(e)
 map.on('click',onMapClick);
 
 span.onclick = () => modal.style.display = "none";
+
 button.onclick = () => {
 
     const desc = {
         desc: document.getElementById("description").value,
         hint: document.getElementById("tip_hint").value,
-        dest: document.getElementById("destination").value
+        dest: document.getElementById("destination").value,
+        url : audio_url
     }
-    L.marker(latlng).addTo(map).bindPopup(`${desc.desc}<br>${desc.hint}<br>${desc.dest}<br><img src='${image.src}' style="width: 300px;">`);
+    L.marker(latlng).addTo(map).bindPopup(`${desc.desc}<br>${desc.hint}<br>${desc.dest}<br><Audio controls=true src=${desc.url}></Audio> <br><img src='${image.src}' style="width: 300px;">`);
     modal.style.display = "none";
 };
 
@@ -134,4 +138,6 @@ function createDownloadLink(blob) {
     li.appendChild(link);
     //add the li element to the ordered list 
     recordingsList.appendChild(li);
+    
+    audio_url = url;
 }

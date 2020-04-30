@@ -17,6 +17,9 @@
     <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
         integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
         crossorigin=""></script>
+
+    <script src="https://cdn.rawgit.com/mattdiamond/Recorderjs/08e7abd9/dist/recorder.js"></script>
+
     <style>
         html,
         body {
@@ -55,6 +58,17 @@
             <input type="file" id="upload" accept="image/*">
             <img id="myImg" src="#" alt="Your image" style="display: none; width: 300px;">
             <button id="pin_button">Place pin</button>
+
+            <br>
+            <br>
+
+            <button id="record_button">Record </button>
+            <button id="stop_button" disabled>Stop </button>
+            <br>
+            <ol id= "recordingsList"> </ol>
+            <br>
+            <button id="audio_button">Play/Pause Audio</button>
+
         </div>
     </div>
     <div id='map'></div>

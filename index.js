@@ -34,6 +34,16 @@ const span = document.getElementsByClassName("close")[0];
 const button = document.getElementById("pin_button");
 const file = document.getElementById("upload");
 const image = document.getElementById("myImg");
+const audio_button = document.getElementById("audio_button");
+const record_button = document.getElementById("record_button");
+const stop_button = document.getElementById("stop_button");
+
+var audio_playing = false;
+const ad = new Audio("https://www.mboxdrive.com/soul.mp3");
+
+var rec;
+var audio_input;
+var audio_stream;
 
 function onMapClick(e)
 {
@@ -57,4 +67,71 @@ button.onclick = () => {
 file.onchange = () => {
     image.src= URL.createObjectURL(file.files[0]);
     image.style.display = "block";
+}
+
+audio_button.onclick = () => {
+    
+    if(audio_playing === false){
+        ad.play();
+        audio_playing = true;
+    }
+    else{
+        ad.pause();
+        audio_playing = false;
+    }
+}
+
+record_button.onclick = () => {
+    record_button.disabled = true;
+    stop_button.disabled = false;
+
+
+
+    navigator.mediaDevices.getUserMedia({audio: true, video:false}).then(function(stream){
+ 
+        var audioContext = new AudioContext();
+
+        audio_stream = stream;
+
+        audio_input = audioContext.createMediaStreamSource(stream);
+
+        rec = new Recorder(audio_input, {
+            numChannels : 1
+        });
+        rec.record();
+    })
+
+
+}
+
+stop_button.onclick = () => {
+    stop_button.disabled = true;
+    record_button.disabled = false;
+    rec.stop();
+    audio_stream.getAudioTracks()[0].stop();
+
+    document.getElementById("recordingsList").innerHTML = "";
+    rec.exportWAV(createDownloadLink);
+}
+
+
+// copy pasted from https://blog.addpipe.com/using-recorder-js-to-capture-wav-audio-in-your-html5-web-site/
+
+function createDownloadLink(blob) {
+    var url = URL.createObjectURL(blob);
+    var au = document.createElement('audio');
+    var li = document.createElement('li');
+    var link = document.createElement('a');
+    //add controls to the <audio> element 
+    au.controls = true;
+    au.src = url;
+    //link the a element to the blob 
+    link.href = url;
+    link.download = new Date().toISOString() + '.wav';
+    link.innerHTML = link.download;
+    //add the new audio and a elements to the li element 
+    li.appendChild(au);
+    li.appendChild(link);
+    //add the li element to the ordered list 
+    recordingsList.appendChild(li);
 }

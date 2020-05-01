@@ -1,5 +1,4 @@
 
-
 var map = L.map('map').fitWorld();
 
 L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
@@ -40,7 +39,7 @@ const recordButton = document.getElementById("record");
 
 var rec;
 var audio_input;
-var audio_stream;
+var audio;
 var audio_url;
 
 
@@ -77,42 +76,58 @@ file.onchange = () => {
     image.style.display = "block";
 }
 
-recordButton.addEventListener('click', () => {
+recordButton.onclick = () => {
     if (recordButton.style.backgroundColor === "red") {
         // Stop recording
         recordButton.style.backgroundColor = "rgb(0,86,39)";
         recordButton.innerText = "Record";
         rec.stop();
-        audio_stream.getAudioTracks()[0].stop();
-        document.getElementById("recordingsList").innerHTML = "";
-        rec.exportWAV(createDownloadLink);
+        rec.stream.getTracks().forEach(i => i.stop())
+        
+        
     }
     else {
         // switch to recording
         recordButton.style.backgroundColor = "red";
         recordButton.innerText = "Stop";
         navigator.mediaDevices.getUserMedia({ audio: true, video: false }).then(function (stream) {
-            var audioContext = new (window.AudioContext || windows.webkitAudioContext)();
-            audio_stream = stream;
-            audio_input = audioContext.createMediaStreamSource(stream);
-            rec = new Recorder(audio_input, {
-                numChannels: 1
-            });
-            rec.record();
+            rec = new window.MediaRecorder(stream)
+            
+            rec.addEventListener('dataavailable', e => {
+                document.getElementById("recordingsList").innerHTML = "";
+                var url = URL.createObjectURL(e.data);
+                var au = document.createElement('audio');
+                var li = document.createElement('li');
+                var link = document.createElement('a');
+                //add controls to the <audio> element 
+                au.controls = true;
+                au.src = url;
+                //link the a element to the blob 
+                link.href = url;
+                link.download = new Date().toISOString() + '.wav';
+                link.innerHTML = link.download;
+                //add the new audio and a elements to the li element 
+                li.appendChild(au);
+                li.appendChild(link);
+                //add the li element to the ordered list 
+                recordingsList.appendChild(li);
+                audio_url = url;
+                console.log(audio_url)
+              })
+            rec.start();
         })
     }
-})
+}
 
 // copy pasted from https://blog.addpipe.com/using-recorder-js-to-capture-wav-audio-in-your-html5-web-site/
 
-function createDownloadLink(blob) {
-    var url = URL.createObjectURL(blob);
+function createDownloadLink(e) {
     var au = document.createElement('audio');
     var li = document.createElement('li');
     var link = document.createElement('a');
     //add controls to the <audio> element 
     au.controls = true;
-    au.src = url;
+    au.src = URL.createObjectURL(e.data);
     //link the a element to the blob 
     link.href = url;
     link.download = new Date().toISOString() + '.wav';

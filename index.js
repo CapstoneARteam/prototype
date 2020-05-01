@@ -1,3 +1,5 @@
+
+
 var map = L.map('map').fitWorld();
 
 L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
@@ -75,7 +77,7 @@ file.onchange = () => {
     image.style.display = "block";
 }
 
-recordButton.onclick = () => {
+recordButton.addEventListener('click', () => {
     if (recordButton.style.backgroundColor === "red") {
         // Stop recording
         recordButton.style.backgroundColor = "rgb(0,86,39)";
@@ -90,7 +92,7 @@ recordButton.onclick = () => {
         recordButton.style.backgroundColor = "red";
         recordButton.innerText = "Stop";
         navigator.mediaDevices.getUserMedia({ audio: true, video: false }).then(function (stream) {
-            var audioContext = new AudioContext();
+            var audioContext = new (window.AudioContext || windows.webkitAudioContext)();
             audio_stream = stream;
             audio_input = audioContext.createMediaStreamSource(stream);
             rec = new Recorder(audio_input, {
@@ -99,7 +101,7 @@ recordButton.onclick = () => {
             rec.record();
         })
     }
-}
+})
 
 // copy pasted from https://blog.addpipe.com/using-recorder-js-to-capture-wav-audio-in-your-html5-web-site/
 

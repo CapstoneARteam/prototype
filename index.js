@@ -119,7 +119,6 @@ function createDownloadLink(blob) {
     li.appendChild(au);
     li.appendChild(link);
     //add the li element to the ordered list 
-    console.log(recordingsList);
     recordingsList.appendChild(li);
     
     audio_url = url;

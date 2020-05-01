@@ -50,17 +50,22 @@
     <div class="modal" id="pin_form">
         <div class="modal-content">
             <span class="close">&times;</span>
-            <h2>Add a pin</h2>
-            <input type="text" id="description">
-            <input type="text" id="tip_hint">
+            <h2>Add a Pin</h2>
+            <label for="description">Description:</label><br>
+            <input type="text" id="description"><br>
+            <label for="description">Hints:</label><br>
+            <input type="text" id="tip_hint"><br>
+            <label for="description">Destination:</label><br>
             <input type="text" id="destination">
             <br>
-            <input type="file" id="upload" accept="image/*">
+            <br>
             <img id="myImg" src="#" alt="Your image" style="display: none; width: 300px;">
-            <button id="pin_button">Place pin</button>
+            <input type="file" id="upload" accept="image/*" style="display: none;">
+            <label for="upload" class="file">Select an Image</label>
             <button id="record" class="record">Record</button>
             <br>
             <ol id= "recordingsList"> </ol>
+            <button id="pin_button">Place pin</button>
 
         </div>
     </div>

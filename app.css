@@ -20,10 +20,10 @@ html {
   .modal-content {
     border-radius: 1em;
     background-color: #fefefe;
-    margin: 45% auto; /* 15% from the top and centered */
+    margin: 5% auto; /* 15% from the top and centered */
     padding: 20px;
     border: 1px solid #888;
-    width: 80%; /* Could be more or less, depending on screen size */
+    width: 30%; /* Could be more or less, depending on screen size */
   }
   
   /* The Close Button */
@@ -58,3 +58,16 @@ html {
   input {
     width: 100%;
   }
+
+@media only screen and (max-width: 1000px) {
+  .modal-content {
+    width: 50%;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .modal-content {
+    margin: 15% auto; /* 15% from the top and centered */
+    width: 80%;
+  }
+}

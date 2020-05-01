@@ -91,9 +91,7 @@ recordButton.onclick = () => {
         recordButton.style.backgroundColor = "red";
         recordButton.innerText = "Stop";
         navigator.mediaDevices.getUserMedia({ audio: true, video: false }).then(function (stream) {
-<<<<<<< HEAD
             rec = new window.MediaRecorder(stream)
-            
             rec.addEventListener('dataavailable', e => {
                 document.getElementById("recordingsList").innerHTML = "";
                 var url = URL.createObjectURL(e.data);
@@ -116,15 +114,6 @@ recordButton.onclick = () => {
                 console.log(audio_url)
               })
             rec.start();
-=======
-            var audioContext = new AudioContext();
-            audio_stream = stream;
-            audio_input = audioContext.createMediaStreamSource(stream);
-            rec = new Recorder(audio_input, {
-                numChannels: 1
-            });
-            rec.record();
->>>>>>> 66ad27d4f330761c66ecd2c56179f86a4a8c0eb8
         })
     }
 }

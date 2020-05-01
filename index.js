@@ -34,12 +34,7 @@ const span = document.getElementsByClassName("close")[0];
 const button = document.getElementById("pin_button");
 const file = document.getElementById("upload");
 const image = document.getElementById("myImg");
-const audio_button = document.getElementById("audio_button");
-const record_button = document.getElementById("record_button");
-const stop_button = document.getElementById("stop_button");
-
-var audio_playing = false;
-const ad = new Audio("https://www.mboxdrive.com/soul.mp3");
+const recordButton = document.getElementById("record");
 
 var rec;
 var audio_input;
@@ -64,7 +59,14 @@ button.onclick = () => {
         dest: document.getElementById("destination").value,
         url : audio_url
     }
-    L.marker(latlng).addTo(map).bindPopup(`${desc.desc}<br>${desc.hint}<br>${desc.dest}<br><Audio controls=true src=${desc.url}></Audio> <br><img src='${image.src}' style="width: 300px;">`);
+    const img = () => image.src.endsWith("#") ? "" : `<img src='${image.src}' style="width: 300px;">`;
+    L.marker(latlng).addTo(map).bindPopup(`
+        ${desc.desc}<br>
+        ${desc.hint}<br>
+        ${desc.dest}<br>
+        <Audio controls=true src=${desc.url}></Audio><br>
+        ${img()}`
+    );
     modal.style.display = "none";
 };
 
@@ -73,51 +75,31 @@ file.onchange = () => {
     image.style.display = "block";
 }
 
-audio_button.onclick = () => {
-    
-    if(audio_playing === false){
-        ad.play();
-        audio_playing = true;
+recordButton.onclick = () => {
+    if (recordButton.style.backgroundColor === "red") {
+        // Stop recording
+        recordButton.style.backgroundColor = "rgb(0,86,39)";
+        recordButton.innerText = "Record";
+        rec.stop();
+        audio_stream.getAudioTracks()[0].stop();
+        document.getElementById("recordingsList").innerHTML = "";
+        rec.exportWAV(createDownloadLink);
     }
-    else{
-        ad.pause();
-        audio_playing = false;
+    else {
+        // switch to recording
+        recordButton.style.backgroundColor = "red";
+        recordButton.innerText = "Stop";
+        navigator.mediaDevices.getUserMedia({ audio: true, video: false }).then(function (stream) {
+            var audioContext = new AudioContext();
+            audio_stream = stream;
+            audio_input = audioContext.createMediaStreamSource(stream);
+            rec = new Recorder(audio_input, {
+                numChannels: 1
+            });
+            rec.record();
+        })
     }
 }
-
-record_button.onclick = () => {
-    record_button.disabled = true;
-    stop_button.disabled = false;
-
-
-
-    navigator.mediaDevices.getUserMedia({audio: true, video:false}).then(function(stream){
- 
-        var audioContext = new AudioContext();
-
-        audio_stream = stream;
-
-        audio_input = audioContext.createMediaStreamSource(stream);
-
-        rec = new Recorder(audio_input, {
-            numChannels : 1
-        });
-        rec.record();
-    })
-
-
-}
-
-stop_button.onclick = () => {
-    stop_button.disabled = true;
-    record_button.disabled = false;
-    rec.stop();
-    audio_stream.getAudioTracks()[0].stop();
-
-    document.getElementById("recordingsList").innerHTML = "";
-    rec.exportWAV(createDownloadLink);
-}
-
 
 // copy pasted from https://blog.addpipe.com/using-recorder-js-to-capture-wav-audio-in-your-html5-web-site/
 
@@ -137,6 +119,7 @@ function createDownloadLink(blob) {
     li.appendChild(au);
     li.appendChild(link);
     //add the li element to the ordered list 
+    console.log(recordingsList);
     recordingsList.appendChild(li);
     
     audio_url = url;

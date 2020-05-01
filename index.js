@@ -1,7 +1,4 @@
-<<<<<<< HEAD
 
-=======
->>>>>>> 66ad27d4f330761c66ecd2c56179f86a4a8c0eb8
 var map = L.map('map').fitWorld();
 
 L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {

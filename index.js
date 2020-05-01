@@ -53,7 +53,6 @@ map.on('click',onMapClick);
 span.onclick = () => modal.style.display = "none";
 
 button.onclick = () => {
-
     const desc = {
         desc: document.getElementById("description").value,
         hint: document.getElementById("tip_hint").value,
@@ -82,12 +81,10 @@ recordButton.onclick = () => {
         recordButton.style.backgroundColor = "rgb(0,86,39)";
         recordButton.innerText = "Record";
         rec.stop();
-        rec.stream.getTracks().forEach(i => i.stop())
-        
-        
+        rec.stream.getTracks().forEach(i => i.stop());
     }
     else {
-        // switch to recording
+        // Switch to recording
         recordButton.style.backgroundColor = "red";
         recordButton.innerText = "Stop";
         navigator.mediaDevices.getUserMedia({ audio: true, video: false }).then(function (stream) {
@@ -111,31 +108,8 @@ recordButton.onclick = () => {
                 //add the li element to the ordered list 
                 recordingsList.appendChild(li);
                 audio_url = url;
-                console.log(audio_url)
               })
             rec.start();
         })
     }
-}
-
-// copy pasted from https://blog.addpipe.com/using-recorder-js-to-capture-wav-audio-in-your-html5-web-site/
-
-function createDownloadLink(e) {
-    var au = document.createElement('audio');
-    var li = document.createElement('li');
-    var link = document.createElement('a');
-    //add controls to the <audio> element 
-    au.controls = true;
-    au.src = URL.createObjectURL(e.data);
-    //link the a element to the blob 
-    link.href = url;
-    link.download = new Date().toISOString() + '.wav';
-    link.innerHTML = link.download;
-    //add the new audio and a elements to the li element 
-    li.appendChild(au);
-    li.appendChild(link);
-    //add the li element to the ordered list 
-    recordingsList.appendChild(li);
-    
-    audio_url = url;
 }
